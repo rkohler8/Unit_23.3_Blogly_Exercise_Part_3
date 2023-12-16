@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+<a href="/posts/{{post.id}}">Go Back</a>
+
+<h1>Edit Post</h1>
+
+<form method="POST">
+  <div class="text-entry">
+    <label for="title" class="">Title</label>
+    <input type="text" id="title" name="title" placeholder="title" value="{{post.title}}">
+    <!-- <label>
+        Title <input type="text" name="title" />
+    </label> -->
+  </div>
+  <div class="text-entry">
+    <label for="content" class="">Post Content</label>
+    <input type="text" id="content" name="content" placeholder="content" value="{{post.content}}">
+    <!-- <label>
+        Post Content <input type="text" name="content" />
+    </label> -->
+  </div>
+  <button type="submit" class="cancel-button" formaction="/posts/{{post.id}}" formmethod="">Cancel</button>
+  <button type="submit" class="add-button">Edit</button>
+</form>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+<a href="/users/{{user.id}}">Go Back</a>
+
+<h1>Add Post for {{user.full_name}}</h1>
+
+<form method="POST">
+  <div class="text-entry">
+    <label for="title" class="">Title</label>
+    <input type="text" id="title" name="title" placeholder="title">
+    <!-- <label>
+        Title <input type="text" name="title" />
+    </label> -->
+  </div>
+  <div class="text-entry">
+    <label for="content" class="">Post Content</label>
+    <input type="text" id="content" name="content" placeholder="content">
+    <!-- <label>
+        Post Content <input type="text" name="content" />
+    </label> -->
+  </div>
+  <button type="submit" class="cancel-button" formaction="/users/{{user.id}}" formmethod="">Cancel</button>
+  <button type="submit" class="add-button">Add</button>
+</form>
+{% endblock %}

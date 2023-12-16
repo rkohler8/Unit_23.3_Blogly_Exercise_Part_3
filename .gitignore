@@ -1,0 +1,10 @@
+venv/
+__pycache__
+surveys.py
+app2.py
+base1.html
+test_models_vid.py
+emp_seed.py
+templates/phones.html
+emp_models.py
+oops_requirements.txt

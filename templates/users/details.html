@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<a href="/">Go Back</a>
+<div class="container">
+  {% if user.image_url %}
+  <div class="image">
+    <img src="{{ user.image_url }}"
+          alt="{{ user.full_name }}"
+          class="">
+  </div>
+  {% endif %}
+
+  <div>
+    <h1>{{user.full_name}}</h1>
+
+    <form>
+      <button type="submit" class="edit-button" 
+      formaction="/users/{{user.id}}/edit" formmethod="GET">
+      Edit
+      </button>
+      <button type="submit" class="delete-button" 
+      formaction="/users/{{user.id}}/delete" formmethod="POST">
+      Delete
+      </button>
+    </form>
+
+
+    <h2 class="">Posts</h2>
+
+    <ul>
+      {% for post in user.posts %}
+      <li>
+        <a href="/posts/{{post.id}}">{{ post.title }}</a>
+        <small>{{post.friendly_date}}</small>
+      </li>
+      {% endfor %}
+    </ul>
+    <form>
+      <button type="submit" class="add-button" 
+      formaction="/users/{{user.id}}/posts/new">
+      Add Post
+      </button>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

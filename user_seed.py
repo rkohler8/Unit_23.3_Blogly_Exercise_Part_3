@@ -1,6 +1,6 @@
 """Seed file to make sample data for users db."""
 
-from models import User, Post, db
+from models import db, User, Post, Tag
 from app import app
 
 # Create all tables
@@ -10,8 +10,9 @@ db.create_all()
 # If tables aren't empty, empty them
 User.query.delete()
 Post.query.delete()
+Tag.query.delete()
 
-# Add users
+# Add Users
 stamos = User(first_name='John', last_name='Stamos', image_url="https://pyxis.nymag.com/v1/imgs/283/746/709a300b26da59b4950aa2dfeec3d0a03f-27-john-stamos-silo.rvertical.w330.png")
 hader = User(first_name='Bill', last_name='Hader', image_url="https://variety.com/wp-content/uploads/2022/12/Bill_Hader-1.png")
 reynolds = User(first_name='Ryan', last_name='Reynolds', image_url="https://static.wixstatic.com/media/e59907_a366bf5ce7ef48a98af5b99e46d3404f~mv2.png/v1/fill/w_392,h_392,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/Image-empty-state.png")
@@ -43,18 +44,19 @@ u7p1 = Post(title="User 7 Post 1", content="PlsWork", user=hepburn)
 u7p2 = Post(title="User 7 Post 2", content="PlsWork2", user=hepburn)
 u7p3 = Post(title="User 7 Post 3", content="PlsWork3", user=hepburn)
 
+#Add Tags
+tag1 = Tag(name="First Tag!")
+tag2 = Tag(name="Second Tag!")
+tag3 = Tag(name="Third Tag!")
+
 # Add new objects to session, so they'll persist
 db.session.add_all([stamos,hader,reynolds,jackman,carrey,freeman,hepburn])
-# db.session.add (stamos)
-# db.session.add (hader)
-# db.session.add (reynolds)
-# db.session.add (jackman)
-# db.session.add (carrey)
-# db.session.add (freeman)
-# db.session.add (hepburn)
+
 db.session.add_all([u1p1,u2p1,u3p1,u4p1,u5p1,u6p1,u7p1])
 db.session.add_all([u1p2,u2p2,u3p2,u4p2,u5p2,u6p2,u7p2])
 db.session.add_all([u1p3,u2p3,u3p3,u4p3,u5p3,u6p3,u7p3])
+
+db.session.add_all([tag1,tag2,tag3])
 
 # Commit--otherwise, this never gets saved!
 db.session.commit()

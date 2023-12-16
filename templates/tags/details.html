@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<a href="/tags">Go Back</a>
+<div>
+    <h1>{{tag.name}}</h1>
+    <ul>
+        {% for tag in tags %}
+            <li><a href="/tags/{{tag.id}}">{{tag.name}}</a></li>
+        {% endfor %}
+    </ul>
+
+    <form>
+        <button type="submit" class="cancel-button" formaction="/tags" formmethod="">Cancel</button>
+        <button type="submit" class="edit-button" 
+        formaction="/tags/{{tag.id}}/edit">
+        Edit
+        </button>
+        <button type="submit" class="delete-button" formaction="/tags/{{tag.id}}/delete" formmethod="POST">Delete</button>
+    </form>
+</div>
+{% endblock %}

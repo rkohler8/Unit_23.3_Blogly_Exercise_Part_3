@@ -1,9 +1,9 @@
 """Blogly application."""
 
-from flask import Flask, request, render_template, redirect, flash, session
+from flask import Flask, request, render_template, redirect, flash
 from flask_debugtoolbar import DebugToolbarExtension
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.sql import text
+# from flask_sqlalchemy import SQLAlchemy
+# from sqlalchemy.sql import text
 from models import db, connect_db, User, Post, Tag
 
 app = Flask(__name__)
@@ -29,6 +29,10 @@ def page_not_found(e):
     """Show 404 NOT FOUND page."""
 
     return render_template('404.html'), 404
+
+
+### *** PART 1 USERS ROUTES *** ###
+
 
 @app.route('/users')
 def list_users():
@@ -166,3 +170,54 @@ def delete_post(post_id):
 ### *** PART 3 TAGS ROUTES *** ###
 
 
+# GET /tags
+# Lists all tags, with links to the tag detail page.
+@app.route('/tags')
+def list_tags():
+    """Shows list of all users in db"""
+
+    tags = Tag.query.all()
+    return render_template('tags/listing.html', tags=tags)
+
+# GET /tags/[tag-id]
+# Show detail about a tag. Have links to edit form and to delete.
+@app.route('/tags/<int:tag_id>')
+def show_tag(tag_id):
+    """Show details about a single tag"""
+
+    tag = Tag.query.get_or_404(tag_id)
+    return render_template("tags/details.html", tag=tag)
+
+# GET /tags/new
+# Shows a form to add a new tag.
+
+@app.route('/tags/new', methods=["GET"])
+def add_tag_form():
+    """Shows an add form for tags"""
+
+    return render_template('tags/new_tag.html')
+
+# POST /tags/new
+# Process add form, adds tag, and redirect to tag list.
+
+@app.route('/tags/new', methods=["POST"])
+def create_tag():
+    """Process the add form, adding a new user and going back to /users"""
+
+    new_tag = Tag(name=request.form['name'])
+
+    db.session.add(new_tag)
+    db.session.commit()
+    flash(f"New Tag {new_tag.name} created")
+
+    return redirect("/tags")
+
+# GET /tags/[tag-id]/edit
+# Show edit form for a tag.
+
+
+# POST /tags/[tag-id]/edit
+# Process edit form, edit tag, and redirects to the tags list.
+
+# POST /tags/[tag-id]/delete
+# Delete a tag.

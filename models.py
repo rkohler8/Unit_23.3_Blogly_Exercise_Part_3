@@ -13,6 +13,8 @@ DEFAULT_IMAGE_URL = "https://www.freeiconspng.com/uploads/icon-user-blue-symbol-
 """Models for Blogly."""
 
 class User(db.Model):
+    """Blog Users Model"""
+
     __tablename__ = "users"
 
     id = db.Column(db.Integer,
@@ -74,18 +76,29 @@ class Post(db.Model):
 
 
 class Tag(db.Model):
-    """Post Tags Model"""
+    """Tags Model"""
 
-    ___tablename___ = "tags"
+    __tablename__ = "tags"
 
     id = db.Column(db.Integer, 
                    primary_key=True, 
                    autoincrement=True)
     
-    name = db.Column(db.Text,
-                     nullable=False,
+    name = db.Column(db.Text, 
+                     nullable=False, 
                      unique=True)
-    
-
 
     
+
+class PostTag(db.Model):
+    """Tags on a Post Model"""
+
+    __tablename__ = "posts_tags"
+
+    post_id = db.Column(db.Integer, 
+                        db.ForeignKey('posts.id'), 
+                        primary_key=True)
+
+    tag_id = db.Column(db.Integer, 
+                       db.ForeignKey('tags.id'), 
+                       primary_key=True)

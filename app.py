@@ -202,7 +202,7 @@ def add_tag_form():
 
 @app.route('/tags/new', methods=["POST"])
 def create_tag():
-    """Process the add form, adding a new user and going back to /users"""
+    """Process the add form, adding a new tag and going back to /tags"""
 
     new_tag = Tag(name=request.form['name'])
 
@@ -215,9 +215,40 @@ def create_tag():
 # GET /tags/[tag-id]/edit
 # Show edit form for a tag.
 
+@app.route('/tags/<int:tag_id>/edit')
+def edit_tag(tag_id):
+    """Show the edit page for a tag"""
+
+    tag = Tag.query.get_or_404(tag_id)
+    return render_template("tags/edit.html", tag=tag)
 
 # POST /tags/[tag-id]/edit
 # Process edit form, edit tag, and redirects to the tags list.
 
+@app.route('/tags/<int:tag_id>/edit', methods=["POST"])
+def update_tag(tag_id):
+    """Handle the tag edit form, returning the user to the /tags page"""
+
+    tag = Tag.query.get_or_404(tag_id)
+    tag.name=request.form['name']
+
+    db.session.add(tag)
+    db.session.commit()
+    flash(f"Post '{tag.name}' edited")
+
+    return redirect(f"/tags/{tag.id}")
+
 # POST /tags/[tag-id]/delete
 # Delete a tag.
+
+@app.route('/tags/<int:tag_id>/delete', methods=["POST"])
+def delete_tag(tag_id):
+    """Delete a tag"""
+    
+    tag = Tag.query.get_or_404(tag_id)
+    db.session.delete(tag)
+    db.session.commit()
+    flash(f"Tag '{tag.name}' deleted")
+
+    return redirect(f"/tags")
+

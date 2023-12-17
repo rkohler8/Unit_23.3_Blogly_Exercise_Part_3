@@ -1,7 +1,7 @@
 from unittest import TestCase
 
 from app import app
-from models import db, User, Post
+from models import db, User, Post, Tag
 
 # Use test database and don't clutter tests with SQL
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///blogly_test'
@@ -16,14 +16,15 @@ app.config['DEBUG_TB_HOSTS'] = ['dont-show-debug-toolbar']
 db.drop_all()
 db.create_all()
 
-class UserAndPostViewsTestCase(TestCase):
-    """Tests for views for Users and User's Posts."""
+class UserPostAndTagViewsTestCase(TestCase):
+    """Tests for views for Users, Posts, and Tags."""
 
     def setUp(self):
         """Add sample user."""
 
         Post.query.delete()
         User.query.delete()
+        Tag.query.delete()
 
         user = User(first_name="TestFirstName", last_name="TestLastName", image_url="TestImageURL.png")
         db.session.add(user)
@@ -31,16 +32,23 @@ class UserAndPostViewsTestCase(TestCase):
         post = Post(title="TestPost1Title", content="TestContent", user=user)
         db.session.add(post)
         db.session.commit()
+        tag = Tag(name="TestTagName")
+        db.session.add(tag)
+        db.session.commit()
 
         self.user_id = user.id
         self.user = user
         self.post_id = post.id
         self.post = post
+        self.tag_id = tag.id
+        self.tag = tag
 
     def tearDown(self):
         """Clean up any fouled transaction."""
 
         db.session.rollback()
+
+################        USERS TEST CASES            ################
 
     def test_list_users(self):
         with app.test_client() as client:
@@ -66,6 +74,9 @@ class UserAndPostViewsTestCase(TestCase):
             self.assertEqual(resp.status_code, 200)
             self.assertIn('<h1>TestFirstName TestLastName</h1>', html)
             self.assertIn(self.user.image_url, html)
+
+
+################        POSTS TEST CASES            ################
             
     def test_show_post(self):
         with app.test_client() as client:
@@ -115,3 +126,45 @@ class UserAndPostViewsTestCase(TestCase):
 
             resp2 = client.get(f"users/{self.user_id}")
             self.assertEqual(resp2.status_code, 404)
+
+
+################        TAGS TEST CASES            ################
+            
+    def test_list_tags(self):
+        with app.test_client() as client:
+            resp = client.get("/tags")
+            html = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn('TestTagName', html)
+
+    def test_show_tag(self):
+        with app.test_client() as client:
+            resp = client.get(f"tags/{self.tag_id}")
+            html = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn('<h1>TestTagName</h1>', html)
+
+    def test_create_tag(self):
+        with app.test_client() as client:
+            d = {"name": "TestCreateTagName"}
+            resp = client.post("tags/new", data=d, follow_redirects=True)
+            html = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn('>TestCreateTagName</a>', html)
+
+    def test_delete_tag(self):
+        with app.test_client() as client:
+            resp = client.post(f"tags/{self.tag_id}/delete", follow_redirects=True)
+            html = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertNotIn('>TestTagName</a>', html)
+
+            resp2 = client.get(f"tags/{self.tag_id}")
+            self.assertEqual(resp2.status_code, 404)
+
+
+

@@ -9,6 +9,22 @@
     <label for="name" class="">Name</label>
     <input type="text" id="name" name="name" placeholder="name" value="{{tag.name}}">
   </div>
+  <div>
+    {% for post in posts %}
+    <div>
+      <input type="checkbox"
+             value="{{ post.id }}"
+             id="post_{{ post.id }}"
+             name="posts"
+             {% if post in tag.posts %}
+              checked
+              {% endif %}>
+      <label for="post_{{ post.id }}">
+        {{ post.title }}
+      </label>
+    </div>
+    {% endfor %}
+  </div>
   <button type="submit" class="cancel-button" formaction="/tags/{{tag.id}}" formmethod="">Cancel</button>
   <button type="submit" class="add-button">Edit</button>
 </form>

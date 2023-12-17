@@ -5,8 +5,8 @@
 <div>
     <h1>{{tag.name}}</h1>
     <ul>
-        {% for tag in tags %}
-            <li><a href="/tags/{{tag.id}}">{{tag.name}}</a></li>
+        {% for post in tag.posts %}
+            <li><a href="/posts/{{post.id}}">{{post.title}}</a></li>
         {% endfor %}
     </ul>
 

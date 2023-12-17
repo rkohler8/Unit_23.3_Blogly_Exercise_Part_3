@@ -19,6 +19,19 @@
         Post Content <input type="text" name="content" />
     </label> -->
   </div>
+  <div>
+    {% for tag in tags %}
+    <div>
+      <input type="checkbox"
+             value="{{ tag.id }}"
+             id="tag_{{ tag.id }}"
+             name="tags">
+      <label for="tag_{{ tag.id }}">
+        {{ tag.name }}
+      </label>
+    </div>
+    {% endfor %}
+  </div>
   <button type="submit" class="cancel-button" formaction="/users/{{user.id}}" formmethod="">Cancel</button>
   <button type="submit" class="add-button">Add</button>
 </form>

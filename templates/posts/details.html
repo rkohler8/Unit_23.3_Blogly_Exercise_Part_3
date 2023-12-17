@@ -7,6 +7,18 @@
 
     <p>{{post.content}}</p>
     <p><i>By {{post.user.full_name}} on {{post.friendly_date}}</i></p>
+
+    <p>
+        <b>Tags:</b>
+        {% for tag in post.tags %}
+            <a href="/tags/{{tag.id}}"><i class="tag-on-post">{{tag.name}}</i></a>
+        {% endfor %}
+    </p>
+    <!-- <ul>
+        {% for tag in post.tags %}
+            <li><a href="/tags/{{tag.id}}">{{tag.name}}</a></li>
+        {% endfor %}
+    </ul> -->
     <form>
         <button type="submit" class="cancel-button" formaction="/users/{{post.user.id}}" formmethod="">Cancel</button>
         <button type="submit" class="edit-button" 

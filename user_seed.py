@@ -62,26 +62,9 @@ db.session.commit()
 
 
 #Add PostTag Connections
-
 posttag1 = PostTag(post_id=u1p1.id, tag_id=tag1.id)
 posttag2 = PostTag(post_id=u1p1.id, tag_id=tag2.id)
 posttag3 = PostTag(post_id=u1p2.id, tag_id=tag3.id)
-# p1t1 = Tag(name='PostTag1',
-#              posts=[PostTag(post_id=u1p1.id, tag_id=tag1.id),
-#                     PostTag(post_id=u1p1.id, tag_id=tag2.id)])
-# p2t1 = Tag(name='PostTag1',
-#              posts=[PostTag(emp_id=liz.id),
-#                           EmployeeProject(emp_id=leonard.id, role='Auditor')])
-
-
-# Add new objects to session, so they'll persist
-# db.session.add_all([stamos,hader,reynolds,jackman,carrey,freeman,hepburn])
-
-# db.session.add_all([u1p1,u2p1,u3p1,u4p1,u5p1,u6p1,u7p1])
-# db.session.add_all([u1p2,u2p2,u3p2,u4p2,u5p2,u6p2,u7p2])
-# db.session.add_all([u1p3,u2p3,u3p3,u4p3,u5p3,u6p3,u7p3])
-
-# db.session.add_all([tag1,tag2,tag3])
 
 db.session.add_all([posttag1,posttag2,posttag3])
 

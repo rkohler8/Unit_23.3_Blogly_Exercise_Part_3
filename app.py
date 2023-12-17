@@ -58,7 +58,7 @@ def create_user():
 
     db.session.add(new_user)
     db.session.commit()
-    flash(f"New user {new_user.full_name} created")
+    flash(f"New user '{new_user.full_name}' created")
 
     return redirect("/users")
 
@@ -98,7 +98,7 @@ def delete_user(user_id):
     user = User.query.get_or_404(user_id)
     db.session.delete(user)
     db.session.commit()
-    flash(f"User {user.full_name} deleted")
+    flash(f"User '{user.full_name}' deleted")
 
     return redirect("/users")
 
@@ -208,7 +208,7 @@ def create_tag():
 
     db.session.add(new_tag)
     db.session.commit()
-    flash(f"New Tag {new_tag.name} created")
+    flash(f"New Tag '{new_tag.name}' created")
 
     return redirect("/tags")
 
@@ -234,7 +234,7 @@ def update_tag(tag_id):
 
     db.session.add(tag)
     db.session.commit()
-    flash(f"Post '{tag.name}' edited")
+    flash(f"Tag '{tag.name}' edited")
 
     return redirect(f"/tags/{tag.id}")
 

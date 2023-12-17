@@ -30,10 +30,6 @@ class User(db.Model):
                      nullable=False,
                      default=DEFAULT_IMAGE_URL)
     
-    # image_url = db.Column(db.String(50),
-    #                  nullable=False,
-    #                  unique=True)
-    
     posts = db.relationship('Post', backref='user', cascade="all, delete-orphan")
 
     @property
@@ -65,14 +61,16 @@ class Post(db.Model):
                         db.ForeignKey('users.id'), 
                         nullable=False,)
     
+
+    # tags = db.relationship('Tag')
+
+    
     @property
     def friendly_date(self):
         """Return nicely-formatted date."""
 
         return self.created_at.strftime("%a %b %-d  %Y, %-I:%M %p")
 
-    def __repr__(self):
-        return f"<Employee {self.title} {self.scontent} {self.created_at} {self.user_id} >"
 
 
 class Tag(db.Model):
@@ -87,8 +85,10 @@ class Tag(db.Model):
     name = db.Column(db.Text, 
                      nullable=False, 
                      unique=True)
-
     
+    posts = db.relationship('Post', secondary='posts_tags', backref='tags')
+
+
 
 class PostTag(db.Model):
     """Tags on a Post Model"""

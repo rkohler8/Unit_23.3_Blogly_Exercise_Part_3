@@ -1,6 +1,6 @@
 """Seed file to make sample data for users db."""
 
-from models import db, User, Post, Tag
+from models import db, User, Post, Tag, PostTag
 from app import app
 
 # Create all tables
@@ -8,6 +8,7 @@ db.drop_all()
 db.create_all()
 
 # If tables aren't empty, empty them
+PostTag.query.delete()
 User.query.delete()
 Post.query.delete()
 Tag.query.delete()
@@ -20,6 +21,8 @@ jackman = User(first_name='Hugh', last_name='Jackman', image_url="https://variet
 carrey = User(first_name='Jim', last_name='Carrey', image_url="https://celebrityendorsers.com/wp-content/uploads/2022/08/Jim-Carrey.png")
 freeman = User(first_name='Morgan', last_name='Freeman', image_url="https://vz.cnwimg.com/thumb-900x/wp-content/uploads/2020/01/Morgan-Freeman.jpg")
 hepburn = User(first_name='Audrey', last_name='Hepburn', image_url="https://www.pngmart.com/files/22/Audrey-Hepburn-PNG-Transparent.png")
+
+db.session.add_all([stamos,hader,reynolds,jackman,carrey,freeman,hepburn])
 
 #Add Posts
 u1p1 = Post(title="User 1 Post 1", content="PlsWork", user=stamos)
@@ -44,19 +47,43 @@ u7p1 = Post(title="User 7 Post 1", content="PlsWork", user=hepburn)
 u7p2 = Post(title="User 7 Post 2", content="PlsWork2", user=hepburn)
 u7p3 = Post(title="User 7 Post 3", content="PlsWork3", user=hepburn)
 
+db.session.add_all([u1p1,u2p1,u3p1,u4p1,u5p1,u6p1,u7p1])
+db.session.add_all([u1p2,u2p2,u3p2,u4p2,u5p2,u6p2,u7p2])
+db.session.add_all([u1p3,u2p3,u3p3,u4p3,u5p3,u6p3,u7p3])
+
 #Add Tags
 tag1 = Tag(name="First Tag!")
 tag2 = Tag(name="Second Tag!")
 tag3 = Tag(name="Third Tag!")
 
-# Add new objects to session, so they'll persist
-db.session.add_all([stamos,hader,reynolds,jackman,carrey,freeman,hepburn])
-
-db.session.add_all([u1p1,u2p1,u3p1,u4p1,u5p1,u6p1,u7p1])
-db.session.add_all([u1p2,u2p2,u3p2,u4p2,u5p2,u6p2,u7p2])
-db.session.add_all([u1p3,u2p3,u3p3,u4p3,u5p3,u6p3,u7p3])
-
 db.session.add_all([tag1,tag2,tag3])
+
+db.session.commit()
+
+
+#Add PostTag Connections
+
+posttag1 = PostTag(post_id=u1p1.id, tag_id=tag1.id)
+posttag2 = PostTag(post_id=u1p1.id, tag_id=tag2.id)
+posttag3 = PostTag(post_id=u1p2.id, tag_id=tag3.id)
+# p1t1 = Tag(name='PostTag1',
+#              posts=[PostTag(post_id=u1p1.id, tag_id=tag1.id),
+#                     PostTag(post_id=u1p1.id, tag_id=tag2.id)])
+# p2t1 = Tag(name='PostTag1',
+#              posts=[PostTag(emp_id=liz.id),
+#                           EmployeeProject(emp_id=leonard.id, role='Auditor')])
+
+
+# Add new objects to session, so they'll persist
+# db.session.add_all([stamos,hader,reynolds,jackman,carrey,freeman,hepburn])
+
+# db.session.add_all([u1p1,u2p1,u3p1,u4p1,u5p1,u6p1,u7p1])
+# db.session.add_all([u1p2,u2p2,u3p2,u4p2,u5p2,u6p2,u7p2])
+# db.session.add_all([u1p3,u2p3,u3p3,u4p3,u5p3,u6p3,u7p3])
+
+# db.session.add_all([tag1,tag2,tag3])
+
+db.session.add_all([posttag1,posttag2,posttag3])
 
 # Commit--otherwise, this never gets saved!
 db.session.commit()
